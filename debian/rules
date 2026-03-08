@@ -1,0 +1,37 @@
+#!/usr/bin/make -f
+
+export DH_VERBOSE = 1
+
+DESTDIR = $(CURDIR)/debian/sx1302-hal
+INSTALL_BIN = $(DESTDIR)/usr/bin
+INSTALL_CONF = $(DESTDIR)/etc/sx1302-hal
+
+%:
+	dh $@
+
+override_dh_auto_build:
+	$(MAKE) all
+
+override_dh_auto_install:
+	install -d $(INSTALL_BIN)
+	install -d $(INSTALL_CONF)
+
+	# Main binaries
+	install -m 0755 packet_forwarder/lora_pkt_fwd $(INSTALL_BIN)/
+	install -m 0755 util_chip_id/util_chip_id $(INSTALL_BIN)/sx1302_util_chip_id
+	install -m 0755 util_net_downlink/util_net_downlink $(INSTALL_BIN)/sx1302_util_net_downlink
+	install -m 0755 util_boot/util_boot $(INSTALL_BIN)/sx1302_util_boot
+	install -m 0755 util_spectral_scan/util_spectral_scan $(INSTALL_BIN)/sx1302_util_spectral_scan
+
+	# Reset script
+	install -m 0755 tools/reset_lgw.sh $(INSTALL_BIN)/sx1302_reset_lgw
+
+	# Config files
+	install -m 0644 packet_forwarder/global_conf.json.sx1250.* $(INSTALL_CONF)/
+	install -m 0644 packet_forwarder/global_conf.json.sx1255.* $(INSTALL_CONF)/
+	install -m 0644 packet_forwarder/global_conf.json.sx1257.* $(INSTALL_CONF)/
+
+override_dh_auto_clean:
+	$(MAKE) clean || true
+
+override_dh_auto_test:

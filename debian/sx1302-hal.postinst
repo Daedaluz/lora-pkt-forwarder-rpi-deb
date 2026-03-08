@@ -1,0 +1,16 @@
+#!/bin/sh
+set -e
+
+case "$1" in
+    configure)
+        # If no global_conf.json symlink/file exists yet, default to EU868
+        if [ ! -e /etc/sx1302-hal/global_conf.json ]; then
+            ln -s /etc/sx1302-hal/global_conf.json.sx1250.EU868 \
+                  /etc/sx1302-hal/global_conf.json
+        fi
+        ;;
+esac
+
+#DEBHELPER#
+
+exit 0

@@ -1,0 +1,13 @@
+#!/bin/sh
+set -e
+
+case "$1" in
+    purge)
+        rm -f /etc/sx1302-hal/global_conf.json
+        rmdir /etc/sx1302-hal 2>/dev/null || true
+        ;;
+esac
+
+#DEBHELPER#
+
+exit 0

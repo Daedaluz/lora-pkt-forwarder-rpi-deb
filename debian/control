@@ -1,0 +1,18 @@
+Source: sx1302-hal
+Section: comm
+Priority: optional
+Maintainer: LoRa Packager <lora@localhost>
+Build-Depends: debhelper-compat (= 13), gcc, make
+Standards-Version: 4.6.2
+Homepage: https://github.com/Lora-net/sx1302_hal
+
+Package: sx1302-hal
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, raspi-utils-core
+Description: Semtech SX1302 LoRa concentrator HAL and packet forwarder
+ Hardware Abstraction Layer and utilities for the Semtech SX1302
+ LoRa concentrator, including lora_pkt_fwd packet forwarder,
+ chip ID utility, spectral scan, and network downlink tools.
+ .
+ Patched for Raspberry Pi on Debian Trixie with pinctrl GPIO
+ support and improved GPS NMEA parsing.
