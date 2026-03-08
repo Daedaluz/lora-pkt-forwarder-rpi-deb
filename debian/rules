@@ -10,7 +10,8 @@ INSTALL_CONF = $(DESTDIR)/etc/sx1302-hal
 	dh $@
 
 override_dh_auto_build:
-	$(MAKE) all
+	unset CFLAGS CPPFLAGS CXXFLAGS LDFLAGS; \
+	$(MAKE) all CROSS_COMPILE=$(DEB_HOST_GNU_TYPE)-
 
 override_dh_auto_install:
 	install -d $(INSTALL_BIN)
@@ -18,10 +19,10 @@ override_dh_auto_install:
 
 	# Main binaries
 	install -m 0755 packet_forwarder/lora_pkt_fwd $(INSTALL_BIN)/
-	install -m 0755 util_chip_id/util_chip_id $(INSTALL_BIN)/sx1302_util_chip_id
-	install -m 0755 util_net_downlink/util_net_downlink $(INSTALL_BIN)/sx1302_util_net_downlink
-	install -m 0755 util_boot/util_boot $(INSTALL_BIN)/sx1302_util_boot
-	install -m 0755 util_spectral_scan/util_spectral_scan $(INSTALL_BIN)/sx1302_util_spectral_scan
+	install -m 0755 util_chip_id/chip_id $(INSTALL_BIN)/sx1302_chip_id
+	install -m 0755 util_net_downlink/net_downlink $(INSTALL_BIN)/sx1302_net_downlink
+	install -m 0755 util_boot/boot $(INSTALL_BIN)/sx1302_boot
+	install -m 0755 util_spectral_scan/spectral_scan $(INSTALL_BIN)/sx1302_spectral_scan
 
 	# Reset script
 	install -m 0755 tools/reset_lgw.sh $(INSTALL_BIN)/sx1302_reset_lgw

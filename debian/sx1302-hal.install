@@ -1,6 +1,0 @@
-usr/bin/lora_pkt_fwd
-usr/bin/sx1302_util_chip_id
-usr/bin/sx1302_util_net_downlink
-usr/bin/sx1302_util_boot
-usr/bin/sx1302_util_spectral_scan
-usr/bin/sx1302_reset_lgw

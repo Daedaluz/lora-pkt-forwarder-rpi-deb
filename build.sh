@@ -32,8 +32,8 @@ cd "${PKG_NAME}-${UPSTREAM_VERSION}"
 export QUILT_PATCHES=debian/patches
 quilt push -a || true
 
-echo "==> Building package..."
-dpkg-buildpackage -us -uc -b
+echo "==> Building package for arm64..."
+dpkg-buildpackage -us -uc -b -a arm64
 
 echo ""
 echo "==> Build complete. Package(s):"
