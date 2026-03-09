@@ -3,8 +3,9 @@
 export DH_VERBOSE = 1
 
 DESTDIR = $(CURDIR)/debian/sx1302-hal
-INSTALL_BIN = $(DESTDIR)/usr/bin
+INSTALL_DIR = $(DESTDIR)/opt/sx1302-hal
 INSTALL_CONF = $(DESTDIR)/etc/sx1302-hal
+INSTALL_BIN = $(DESTDIR)/usr/bin
 
 %:
 	dh $@
@@ -14,26 +15,32 @@ override_dh_auto_build:
 	$(MAKE) all CROSS_COMPILE=$(DEB_HOST_GNU_TYPE)-
 
 override_dh_auto_install:
-	install -d $(INSTALL_BIN)
+	install -d $(INSTALL_DIR)
 	install -d $(INSTALL_CONF)
+	install -d $(INSTALL_BIN)
 
 	# Main binaries
-	install -m 0755 packet_forwarder/lora_pkt_fwd $(INSTALL_BIN)/
-	install -m 0755 util_chip_id/chip_id $(INSTALL_BIN)/sx1302_chip_id
-	install -m 0755 util_net_downlink/net_downlink $(INSTALL_BIN)/sx1302_net_downlink
-	install -m 0755 util_boot/boot $(INSTALL_BIN)/sx1302_boot
-	install -m 0755 util_spectral_scan/spectral_scan $(INSTALL_BIN)/sx1302_spectral_scan
+	install -m 0755 packet_forwarder/lora_pkt_fwd $(INSTALL_DIR)/
+	install -m 0755 util_chip_id/chip_id $(INSTALL_DIR)/chip_id
+	install -m 0755 util_net_downlink/net_downlink $(INSTALL_DIR)/net_downlink
+	install -m 0755 util_boot/boot $(INSTALL_DIR)/boot
+	install -m 0755 util_spectral_scan/spectral_scan $(INSTALL_DIR)/spectral_scan
 
-	# Reset script
-	install -m 0755 tools/reset_lgw.sh $(INSTALL_BIN)/sx1302_reset_lgw
+	# Reset script (lora_pkt_fwd expects ./reset_lgw.sh in working dir)
+	install -m 0755 tools/reset_lgw.sh $(INSTALL_DIR)/reset_lgw.sh
+
+	# Shadow wrapper scripts in /usr/bin
+	for bin in lora_pkt_fwd chip_id net_downlink boot spectral_scan reset_lgw.sh; do \
+		printf '#!/bin/sh\ncd /opt/sx1302-hal && exec ./'"$$bin"' "$$@"\n' \
+			> $(INSTALL_BIN)/sx1302-$$bin; \
+		chmod 0755 $(INSTALL_BIN)/sx1302-$$bin; \
+	done
+	mv $(INSTALL_BIN)/sx1302-lora_pkt_fwd $(INSTALL_BIN)/lora-pkt-fwd
 
 	# Config files
 	install -m 0644 packet_forwarder/global_conf.json.sx1250.* $(INSTALL_CONF)/
 	install -m 0644 packet_forwarder/global_conf.json.sx1255.* $(INSTALL_CONF)/
 	install -m 0644 packet_forwarder/global_conf.json.sx1257.* $(INSTALL_CONF)/
-
-	# Symlink expected by lora_pkt_fwd (calls system("./reset_lgw.sh start"))
-	ln -s /usr/bin/sx1302_reset_lgw $(INSTALL_CONF)/reset_lgw.sh
 
 override_dh_shlibdeps:
 	dh_shlibdeps -l/usr/aarch64-linux-gnu/lib

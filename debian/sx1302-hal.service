@@ -5,8 +5,7 @@ Wants=network-online.target
 
 [Service]
 Type=simple
-WorkingDirectory=/etc/sx1302-hal
-ExecStart=/usr/bin/lora_pkt_fwd -c /etc/sx1302-hal/global_conf.json
+ExecStart=/usr/bin/lora-pkt-fwd -c /etc/sx1302-hal/global_conf.json
 Restart=always
 RestartSec=30
 StandardOutput=journal

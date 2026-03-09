@@ -1,3 +1,11 @@
+sx1302-hal (2.1.0-4) trixie; urgency=medium
+
+  * Move binaries to /opt/sx1302-hal, keep configs in /etc/sx1302-hal
+  * Add /usr/bin wrapper scripts that cd to /opt/sx1302-hal before exec
+  * Main forwarder wrapper available as /usr/bin/lora-pkt-fwd
+
+ -- Tobias Assarsson <tobias.assarsson@gmail.com>  Mon, 09 Mar 2026 00:00:00 +0000
+
 sx1302-hal (2.1.0-3) trixie; urgency=medium
 
   * Add reset_lgw.sh symlink in /etc/sx1302-hal for lora_pkt_fwd
