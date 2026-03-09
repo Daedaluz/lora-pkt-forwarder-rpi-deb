@@ -1,7 +1,7 @@
 Source: sx1302-hal
 Section: comm
 Priority: optional
-Maintainer: LoRa Packager <lora@localhost>
+Maintainer: Tobias Assarsson <tobias.assarsson@gmail.com>
 Build-Depends: debhelper-compat (= 13), gcc-aarch64-linux-gnu
 Standards-Version: 4.6.2
 Homepage: https://github.com/Lora-net/sx1302_hal
