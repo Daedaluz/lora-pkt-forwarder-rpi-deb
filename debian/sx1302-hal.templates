@@ -1,0 +1,30 @@
+Template: sx1302-hal/enable-spi
+Type: boolean
+Default: true
+Description: Enable SPI interface on the Raspberry Pi?
+ The SX1302 concentrator communicates over SPI. This will add
+ dtparam=spi=on to /boot/firmware/config.txt if not already present.
+ .
+ A reboot is required for changes to take effect.
+
+Template: sx1302-hal/enable-gps
+Type: boolean
+Default: false
+Description: Enable GPS serial port for the concentrator?
+ If your concentrator board has a GPS module, this will configure
+ the serial port by adding enable_uart=1 and disabling the serial
+ console in /boot/firmware/config.txt.
+ .
+ A reboot is required for changes to take effect.
+
+Template: sx1302-hal/gps-device
+Type: string
+Default: /dev/ttyAMA0
+Description: GPS serial device path:
+ Specify the serial device connected to the GPS module.
+
+Template: sx1302-hal/reboot-required
+Type: note
+Description: Reboot required
+ SPI and/or GPS configuration has been changed in /boot/firmware/config.txt.
+ Please reboot the Raspberry Pi for changes to take effect.

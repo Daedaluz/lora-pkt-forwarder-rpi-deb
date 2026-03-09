@@ -1,12 +1,53 @@
 #!/bin/sh
 set -e
 
+. /usr/share/debconf/confmodule
+
+BOOT_CONFIG="/boot/firmware/config.txt"
+CHANGED=0
+
 case "$1" in
     configure)
-        # If no global_conf.json symlink/file exists yet, default to EU868
+        # Default config symlink
         if [ ! -e /etc/sx1302-hal/global_conf.json ]; then
             ln -s /etc/sx1302-hal/global_conf.json.sx1250.EU868 \
                   /etc/sx1302-hal/global_conf.json
+        fi
+
+        # Enable SPI
+        db_get sx1302-hal/enable-spi
+        if [ "$RET" = "true" ] && [ -f "$BOOT_CONFIG" ]; then
+            if ! grep -q "^dtparam=spi=on" "$BOOT_CONFIG"; then
+                echo "dtparam=spi=on" >> "$BOOT_CONFIG"
+                CHANGED=1
+            fi
+        fi
+
+        # Enable GPS / serial
+        db_get sx1302-hal/enable-gps
+        if [ "$RET" = "true" ] && [ -f "$BOOT_CONFIG" ]; then
+            if ! grep -q "^enable_uart=1" "$BOOT_CONFIG"; then
+                echo "enable_uart=1" >> "$BOOT_CONFIG"
+                CHANGED=1
+            fi
+
+            # Disable serial console so GPS can use the port
+            if grep -q "console=serial0" /boot/firmware/cmdline.txt 2>/dev/null; then
+                sed -i 's/console=serial0,[0-9]* //g' /boot/firmware/cmdline.txt
+                CHANGED=1
+            fi
+
+            # Disable Bluetooth overlay to free up ttyAMA0 for GPS
+            if ! grep -q "^dtoverlay=disable-bt" "$BOOT_CONFIG"; then
+                echo "dtoverlay=disable-bt" >> "$BOOT_CONFIG"
+                CHANGED=1
+            fi
+        fi
+
+        # Notify if reboot needed
+        if [ "$CHANGED" = "1" ]; then
+            db_input high sx1302-hal/reboot-required || true
+            db_go || true
         fi
         ;;
 esac
