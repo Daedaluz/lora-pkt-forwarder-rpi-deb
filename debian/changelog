@@ -1,3 +1,16 @@
+sx1302-hal (2.1.0-3) trixie; urgency=medium
+
+  * Add reset_lgw.sh symlink in /etc/sx1302-hal for lora_pkt_fwd
+  * Remove redundant reset calls from systemd service
+
+ -- Tobias Assarsson <tobias.assarsson@gmail.com>  Mon, 09 Mar 2026 00:00:00 +0000
+
+sx1302-hal (2.1.0-2) trixie; urgency=medium
+
+  * Fix glibc version mismatch when cross-compiling from newer host
+
+ -- Tobias Assarsson <tobias.assarsson@gmail.com>  Mon, 09 Mar 2026 00:00:00 +0000
+
 sx1302-hal (2.1.0-1) trixie; urgency=medium
 
   * Initial Debian package for sx1302_hal V2.1.0

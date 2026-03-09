@@ -32,6 +32,9 @@ override_dh_auto_install:
 	install -m 0644 packet_forwarder/global_conf.json.sx1255.* $(INSTALL_CONF)/
 	install -m 0644 packet_forwarder/global_conf.json.sx1257.* $(INSTALL_CONF)/
 
+	# Symlink expected by lora_pkt_fwd (calls system("./reset_lgw.sh start"))
+	ln -s /usr/bin/sx1302_reset_lgw $(INSTALL_CONF)/reset_lgw.sh
+
 override_dh_shlibdeps:
 	dh_shlibdeps -l/usr/aarch64-linux-gnu/lib
 

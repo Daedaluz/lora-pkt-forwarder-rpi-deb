@@ -6,9 +6,7 @@ Wants=network-online.target
 [Service]
 Type=simple
 WorkingDirectory=/etc/sx1302-hal
-ExecStartPre=/usr/bin/sx1302_reset_lgw start
 ExecStart=/usr/bin/lora_pkt_fwd -c /etc/sx1302-hal/global_conf.json
-ExecStopPost=/usr/bin/sx1302_reset_lgw stop
 Restart=always
 RestartSec=30
 StandardOutput=journal
