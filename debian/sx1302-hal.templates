@@ -7,6 +7,16 @@ Description: Enable SPI interface on the Raspberry Pi?
  .
  A reboot is required for changes to take effect.
 
+Template: sx1302-hal/enable-i2c
+Type: boolean
+Default: false
+Description: Enable I2C interface for temperature measurements?
+ The SX1302 concentrator board includes an I2C temperature sensor
+ (STTS751) used for thermal compensation. This will add
+ dtparam=i2c_arm=on to /boot/firmware/config.txt if not already present.
+ .
+ A reboot is required for changes to take effect.
+
 Template: sx1302-hal/enable-gps
 Type: boolean
 Default: false
@@ -26,5 +36,5 @@ Description: GPS serial device path:
 Template: sx1302-hal/reboot-required
 Type: note
 Description: Reboot required
- SPI and/or GPS configuration has been changed in /boot/firmware/config.txt.
+ SPI, I2C, and/or GPS configuration has been changed in /boot/firmware/config.txt.
  Please reboot the Raspberry Pi for changes to take effect.

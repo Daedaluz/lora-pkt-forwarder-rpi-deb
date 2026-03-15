@@ -23,6 +23,15 @@ case "$1" in
             fi
         fi
 
+        # Enable I2C for temperature sensor
+        db_get sx1302-hal/enable-i2c
+        if [ "$RET" = "true" ] && [ -f "$BOOT_CONFIG" ]; then
+            if ! grep -q "^dtparam=i2c_arm=on" "$BOOT_CONFIG"; then
+                echo "dtparam=i2c_arm=on" >> "$BOOT_CONFIG"
+                CHANGED=1
+            fi
+        fi
+
         # Enable GPS / serial
         db_get sx1302-hal/enable-gps
         if [ "$RET" = "true" ] && [ -f "$BOOT_CONFIG" ]; then
