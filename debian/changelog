@@ -1,3 +1,9 @@
+sx1302-hal (2.1.0-5) trixie; urgency=medium
+
+  * Add configuration option to enable i2c for temperature readings
+
+ -- Tobias Assarsson <tobias.assarsson@gmail.com>  Mon, 17 Mar 2026 00:00:00 +0000
+
 sx1302-hal (2.1.0-4) trixie; urgency=medium
 
   * Move binaries to /opt/sx1302-hal, keep configs in /etc/sx1302-hal
